@@ -1,0 +1,6 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/fg16tvcbbv8u/aureumflaskapp
+    - /bin/cp -R . $DEPLOYPATH
+    - /bin/touch $DEPLOYPATH/tmp/restart.txt
+
