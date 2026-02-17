@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aureum Chatbot Demo</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/chatbot.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .demo-header h1 {
+            font-size: 48px;
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .demo-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .demo-section {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid #D4AF37;
+        }
+
+        .demo-section h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-section h2 i {
+            color: #D4AF37;
+        }
+
+        .demo-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .demo-section li {
+            padding: 12px 0;
+            color: #555;
+            font-size: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .demo-section li:last-child {
+            border-bottom: none;
+        }
+
+        .demo-section li i {
+            color: #D4AF37;
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: white;
+            color: #D4AF37;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            color: #D4AF37;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                padding: 30px 20px;
+            }
+
+            .demo-header h1 {
+                font-size: 32px;
+            }
+
+            .demo-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>✨ Aureum AI Chatbot</h1>
+            <p>Your intelligent reputation consultant, available 24/7 to help businesses build trust and credibility</p>
+        </div>
+
+        <div class="demo-content">
+            <div class="demo-section">
+                <h2><i class="fas fa-robot"></i> Key Features</h2>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Intelligent conversation flow</li>
+                    <li><i class="fas fa-check-circle"></i> Service-specific responses</li>
+                    <li><i class="fas fa-check-circle"></i> Lead capture & qualification</li>
+                    <li><i class="fas fa-check-circle"></i> Crisis management support</li>
+                    <li><i class="fas fa-check-circle"></i> Mobile-responsive design</li>
+                    <li><i class="fas fa-check-circle"></i> Beautiful UI with animations</li>
+                </ul>
+            </div>
+
+            <div class="demo-section">
+                <h2><i class="fas fa-comments"></i> Try These Questions</h2>
+                <ul>
+                    <li><i class="fas fa-arrow-right"></i> "I need help with fake reviews"</li>
+                    <li><i class="fas fa-arrow-right"></i> "How can I grow my reviews?"</li>
+                    <li><i class="fas fa-arrow-right"></i> "Tell me about your SEO services"</li>
+                    <li><i class="fas fa-arrow-right"></i> "What are your prices?"</li>
+                    <li><i class="fas fa-arrow-right"></i> "How does it work?"</li>
+                    <li><i class="fas fa-arrow-right"></i> "What services do you offer?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Try It?</h2>
+            <p>Click the chat button in the bottom-right corner to start a conversation!</p>
+            <button class="cta-button" onclick="document.getElementById('chatWidgetButton').click()">
+                <i class="fas fa-comments"></i>
+                Open Chatbot
+            </button>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-star"></i>
+                <h3>Review Management</h3>
+                <p>Help users grow authentic reviews across multiple platforms</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Crisis Response</h3>
+                <p>Rapid assistance for reputation emergencies</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>SEO Optimization</h3>
+                <p>Boost local visibility and search rankings</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Social Media</h3>
+                <p>Build authentic engagement and brand presence</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/chatbot.js"></script>
+</body>
+</html>
+

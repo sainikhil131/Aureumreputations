@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Client Reviews - Aureum Reputations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body class="loading">
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Loading..." class="loader-logo">
+    </div>
+
+    <!-- Consultation Modal -->
+    <div class="modal-overlay" id="consultationModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <i class="fas fa-calendar-check modal-icon"></i>
+                <h2>Get Your Free Consultation</h2>
+                <p>Let's discuss how we can elevate your brand's reputation</p>
+            </div>
+            <form class="consultation-form" id="consultationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-name">
+                            <i class="fas fa-user"></i> Full Name *
+                        </label>
+                        <input type="text" id="consult-name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-business">
+                            <i class="fas fa-building"></i> Business Name *
+                        </label>
+                        <input type="text" id="consult-business" name="business_name" placeholder="Your Company" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-email">
+                            <i class="fas fa-envelope"></i> Email Address *
+                        </label>
+                        <input type="email" id="consult-email" name="email" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-phone">
+                            <i class="fas fa-phone"></i> Phone Number *
+                        </label>
+                        <input type="tel" id="consult-phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="consult-service">
+                        <i class="fas fa-star"></i> Service Interested In *
+                    </label>
+                    <select id="consult-service" name="service" required>
+                        <option value="">Select a service...</option>
+                        <option value="Review Generation & Growth">Review Generation & Growth</option>
+                        <option value="Fake Review Removal">Fake Review Removal</option>
+                        <option value="Crisis Management">Crisis Management</option>
+                        <option value="Multi-Platform Management">Multi-Platform Management</option>
+                        <option value="Competitor Monitoring">Competitor Monitoring</option>
+                        <option value="Full Package">Full Package - All Services</option>
+                        <option value="Other">Other / Not Sure</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="consult-message">
+                        <i class="fas fa-comment-dots"></i> How Can We Help You? *
+                    </label>
+                    <textarea id="consult-message" name="message" rows="5" placeholder="Tell us about your reputation management needs, challenges you're facing, or goals you want to achieve..." required></textarea>
+                </div>
+                <button type="submit" class="modal-submit-btn">
+                    <i class="fas fa-paper-plane"></i> Request Free Consultation
+                </button>
+                <div class="form-message-modal"></div>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-logo">
+           <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Loading..." class="loader-logo">
+        </div>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="mainNav">
+            <a href="{{ url_for('index') }}#home">Home</a>
+            <a href="{{ url_for('index') }}#services">Services</a>
+            <a href="{{ url_for('index') }}#aureum-core">Aureum Core</a>
+            <a href="{{ url_for('index') }}#mission">Mission</a>
+            <a href="{{ url_for('index') }}#testimonials">Testimonials</a>
+            <button class="nav-consultation-btn" id="navConsultationBtn">
+                <i class="fas fa-calendar-check"></i>
+                <span>Book a Consultation</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Reviews Hero Section -->
+    <section class="reviews-hero">
+        <div class="reviews-hero-content">
+            <h1 class="reviews-title">What Our Clients Say About <span class="accent">Aureum Reputations</span></h1>
+            <p class="reviews-subtitle">Real stories from businesses we've helped transform their online reputation</p>
+        </div>
+    </section>
+
+    <!-- All Reviews Section -->
+    <section class="all-reviews-section">
+        <div class="reviews-container">
+            
+            <!-- Review 1 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"We were stuck with a 3.8-star rating for almost a year because of fake competitor reviews. After hiring Aureum Reputations, they helped us clean the profile and push it to 4.6 stars in just a few weeks. Our weekend reservations literally doubled. These guys know their stuff."</p>
+                <div class="review-author">
+                    <div class="author-name">Restaurant Owner</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Miami, USA</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 2 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"Our clinic had multiple fake 1-star reviews that scared new patients away. Aureum's team handled the removals smoothly and boosted our Google presence with genuine feedback from real patients. We're now at 4.9 stars and ranking first for 'dentist near me'. Couldn't be happier!"</p>
+                <div class="review-author">
+                    <div class="author-name">Dental Clinic</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> London, UK</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 3 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"We lost a lot of leads due to spam reviews. Aureum Reputations identified every fake one, got them removed, and launched a review campaign that rebuilt our image. In 30 days, we went from 3.2 to 4.8. Leads from Google jumped almost 60%."</p>
+                <div class="review-author">
+                    <div class="author-name">Real Estate Agency</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Los Angeles, USA</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 4 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"Our business had gone quiet because of bad reviews from fake accounts. The Aureum team cleaned it up within a week and brought in new positive ones from real clients. We're now constantly at the top of Maps searches, and customer flow is steady again."</p>
+                <div class="review-author">
+                    <div class="author-name">Salon & Spa</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Dubai, UAE</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 5 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"We had around 20 fake carrier complaints that completely tanked our profile. Aureum Reputations helped remove them one by one and replaced them with verified client feedback. Our dispatch calls went up 40% in the first month."</p>
+                <div class="review-author">
+                    <div class="author-name">Logistics Company</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Texas, USA</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 6 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"We'd been getting spam reviews from a rival property. Aureum stepped in, reported and removed the fake ones, and helped us rebuild with consistent positive reviews. Our overall score rose from 4.0 to 4.8, and our direct bookings have never been higher."</p>
+                <div class="review-author">
+                    <div class="author-name">Boutique Hotel</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Manchester, UK</div>
+                </div>
+            </div>
+
+            <div class="review-divider"></div>
+
+            <!-- Review 7 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-quote-left review-quote"></i>
+                </div>
+                <p class="review-text">"After working with Aureum, our Google ratings jumped from 3.9 to 4.7 in two weeks. They removed fake comments, improved our visibility, and made our stores stand out on Maps. Highly recommend them to any hospitality brand that values reputation."</p>
+                <div class="review-author">
+                    <div class="author-name">Café Chain</div>
+                    <div class="author-location"><i class="fas fa-map-marker-alt"></i> Abu Dhabi, UAE</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CTA Section -->
+        
+    </section>
+
+    <footer class="footer">
+        Contact: <span class="accent">info@aureumreputations.com</span>
+        <br>
+        &copy; 2025 Aureum Reputations. All rights reserved.
+    </footer>
+
+    <!-- WhatsApp Contact Button -->
+    <a href="https://wa.me/918897636665" target="_blank" rel="noopener noreferrer" class="whatsapp-button" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Make URL prefix available to JavaScript
+        window.APP_ROOT = '{{ url_prefix }}';
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>
+

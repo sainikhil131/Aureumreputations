@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aureum Reputations - Build. Protect. Elevate.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body class="loading">
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Loading..." class="loader-logo">
+    </div>
+
+    <!-- Consultation Modal -->
+    <div class="modal-overlay" id="consultationModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <i class="fas fa-calendar-check modal-icon"></i>
+                <h2>Get Your Free Consultation</h2>
+                <p>Let's discuss how we can elevate your brand's reputation</p>
+            </div>
+            <form class="consultation-form" id="consultationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-name">
+                            <i class="fas fa-user"></i> Full Name *
+                        </label>
+                        <input type="text" id="consult-name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-business">
+                            <i class="fas fa-building"></i> Business Name *
+                        </label>
+                        <input type="text" id="consult-business" name="business_name" placeholder="Your Company" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-email">
+                            <i class="fas fa-envelope"></i> Email Address *
+                        </label>
+                        <input type="email" id="consult-email" name="email" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-phone">
+                            <i class="fas fa-phone"></i> Phone Number *
+                        </label>
+                        <input type="tel" id="consult-phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="consult-service">
+                        <i class="fas fa-star"></i> Service Interested In *
+                    </label>
+                    <select id="consult-service" name="service" required>
+                        <option value="">Select a service...</option>
+                        <option value="Review Generation & Growth">Review Generation & Growth</option>
+                        <option value="Fake Review Removal">Fake Review Removal</option>
+                        <option value="Crisis Management">Crisis Management</option>
+                        <option value="Multi-Platform Management">Multi-Platform Management</option>
+                        <option value="Competitor Monitoring">Competitor Monitoring</option>
+                        <option value="Full Package">Full Package - All Services</option>
+                        <option value="Other">Other / Not Sure</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="consult-message">
+                        <i class="fas fa-comment-dots"></i> How Can We Help You? *
+                    </label>
+                    <textarea id="consult-message" name="message" rows="5" placeholder="Tell us about your reputation management needs, challenges you're facing, or goals you want to achieve..." required></textarea>
+                </div>
+                <button type="submit" class="modal-submit-btn">
+                    <i class="fas fa-paper-plane"></i> Request Free Consultation
+                </button>
+                <div class="form-message-modal"></div>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-logo">
+            <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Aureum Reputations" class="header-logo-img">
+        </div>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="mainNav">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#aureum-core">Aureum Core</a>
+            <a href="#mission">Mission</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="/login" class="nav-login-btn">
+                <i class="fas fa-user-shield"></i>
+                <span>Client Login</span>
+            </a>
+
+            <button class="nav-consultation-btn" id="navConsultationBtn">
+                <i class="fas fa-calendar-check"></i>
+                <span>Book a Consultation</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Aureum Reputations Logo" class="hero-logo">
+        <div class="hero-title">
+            <span class="word-animate word-1">Build.</span>
+            <span class="word-animate word-2">Protect.</span>
+            <span class="word-animate word-3 accent">Elevate.</span>
+        </div>
+        <div class="hero-desc">
+            Aureum Reputations is your all-inclusive partner for digital credibility — helping brands grow authentic reviews, eliminate fake ones, and manage crises across every major online platform.
+        </div>
+        <button class="hero-btn"><i class="fas fa-calendar-check" style="margin-right: 10px;"></i>Request a Reputation Audit</button>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="services">
+        <div class="section-title">What <span class="accent">We Do</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <i class="fas fa-star card-icon"></i>
+                <div class="card-title">Review Generation & Growth</div>
+                <div class="subtext">Authentic, automated, and scalable reviews across Google, Yelp, YellowPages, BBB, Clutch, Airbnb, and GoodFirms.</div>
+            </div>
+            <div class="card">
+                <i class="fas fa-shield-alt card-icon"></i>
+                <div class="card-title">Crisis Management</div>
+                <div class="subtext">Rapid response solutions that protect your brand image during online attacks or spam floods.</div>
+            </div>
+            <div class="card">
+                <i class="fas fa-search card-icon"></i>
+                <div class="card-title">SEO & Citation Optimization</div>
+                <div class="subtext">Enhanced visibility and consistency across 50+ global directories.</div>
+            </div>
+            <div class="card">
+                <i class="fas fa-hashtag card-icon"></i>
+                <div class="card-title">Social Media Presence (Beta)</div>
+                <div class="subtext">Curated engagement and automation to elevate your online identity.</div>
+            </div>
+        </div>
+
+        <!-- Enhanced Services CTA Section -->
+        <div class="services-cta-container">
+            <div class="services-cta-content">
+                <div class="services-cta-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="services-cta-title">Ready to Transform Your Reputation?</h3>
+                <p class="services-cta-description">
+                    Discover our complete suite of reputation management solutions designed to elevate your brand's digital presence
+                </p>
+                <div class="services-cta-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">650+</div>
+                        <div class="stat-label">Clients Served</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Reviews Generated</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+                <button class="learn-more-btn-enhanced" onclick="window.location.href='{{ url_prefix }}/services'">
+                    <span class="btn-text">Explore All Services</span>
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Aureum Core Section -->
+    <section class="aureum-core-section" id="aureum-core">
+        <div class="core-title">Aureum Core — Intelligence Behind Every <span class="accent">Reputation</span></div>
+        <div class="core-body">
+            At the heart of Aureum Reputations lies Aureum Core, our proprietary AI-powered ecosystem designed to analyze, automate, and optimize every aspect of reputation growth. From intelligent review tracking to real-time performance mapping, Aureum Core transforms data into precise, actionable insights — ensuring every campaign is executed with flawless accuracy, ethical alignment, and measurable impact.
+        </div>
+        <div class="core-tagline">Where automation meets authenticity.</div>
+
+        <div class="core-icons">
+            <div class="core-icon-card">
+                <i class="fas fa-cog core-icon"></i>
+                <div class="core-icon-label">Automation</div>
+            </div>
+            <div class="core-icon-card">
+                <i class="fas fa-chart-line core-icon"></i>
+                <div class="core-icon-label">Analytics</div>
+            </div>
+            <div class="core-icon-card">
+                <i class="fas fa-check-circle core-icon"></i>
+                <div class="core-icon-label">Accuracy</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="mission">
+        <div class="section-title">Our Mission: To Engineer <span class="accent">Credibility</span></div>
+        <div class="subtext" style="text-align:center; max-width:800px; margin:auto;">
+            Aureum Reputations was founded to redefine how businesses earn and sustain trust in the digital age. We blend automation, analytics, and strategic execution to deliver measurable reputation growth and resilience. Every review, citation, and piece of feedback becomes a building block for your brand's credibility.
+        </div>
+        <div class="mission-container">
+            <div class="mission-item">
+                <i class="fas fa-bullseye mission-icon"></i>
+                <div class="mission-title">Mission</div>
+                <div class="subtext">To create lasting trust ecosystems that empower businesses to grow without limits.</div>
+            </div>
+            <div class="mission-item">
+                <i class="fas fa-eye mission-icon"></i>
+                <div class="mission-title">Vision</div>
+                <div class="subtext">To become the global benchmark for ethical, data-driven reputation management.</div>
+            </div>
+        </div>
+
+        <div class="tagline-text">
+            <em>Because perception isn't everything — it's the only thing.</em>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="testimonials">
+        <div class="section-title">What Our Clients Say About <span class="accent">Aureum Reputations</span></div>
+        <div class="testimonials-subtitle">Real results from businesses we've helped transform</div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <i class="fas fa-quote-left testimonial-quote-icon"></i>
+                <div class="testimonial-text">"Our clinic had multiple fake 1-star reviews that scared new patients away. Aureum's team handled the removals smoothly and boosted our Google presence with genuine feedback from real patients. We're now at 4.9 stars and ranking first for 'dentist near me'. Couldn't be happier!"</div>
+                <div class="testimonial-author">Dental Clinic</div>
+                <div class="testimonial-location">London, UK</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <i class="fas fa-quote-left testimonial-quote-icon"></i>
+                <div class="testimonial-text">"We lost a lot of leads due to spam reviews. Aureum Reputations identified every fake one, got them removed, and launched a review campaign that rebuilt our image. In 30 days, we went from 3.2 to 4.8. Leads from Google jumped almost 60%."</div>
+                <div class="testimonial-author">Real Estate Agency</div>
+                <div class="testimonial-location">Los Angeles, USA</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <i class="fas fa-quote-left testimonial-quote-icon"></i>
+                <div class="testimonial-text">"After working with Aureum, our Google ratings jumped from 3.9 to 4.7 in two weeks. They removed fake comments, improved our visibility, and made our stores stand out on Maps. Highly recommend them to any hospitality brand that values reputation."</div>
+                <div class="testimonial-author">Café Chain</div>
+                <div class="testimonial-location">Abu Dhabi, UAE</div>
+            </div>
+        </div>
+        <div class="testimonials-cta">
+            <button class="see-more-reviews-btn" onclick="window.location.href='{{ url_prefix }}/reviews'">
+                <span>See More Reviews</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="contact">
+        <div class="section-title">Let's Protect Your <span class="accent">Reputation</span></div>
+        <div style="text-align:center; margin-bottom: 36px;">
+            Get a free consultation and see how we can elevate your brand.
+        </div>
+        <form class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="text" name="business_name" placeholder="Business Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <textarea name="message" rows="4" placeholder="How can we help you?" required></textarea>
+            <button type="submit"><i class="fas fa-paper-plane" style="margin-right: 8px;"></i>Request Consultation</button>
+        </form>
+    </section>
+
+    <footer class="footer">
+        Contact: <span class="accent">info@aureumreputations.com</span>
+        <br>
+        &copy; 2025 Aureum Reputations. All rights reserved.
+    </footer>
+
+    <!-- WhatsApp Contact Button -->
+    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="whatsapp-button" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Make URL prefix available to JavaScript
+        window.APP_ROOT = '{{ url_prefix }}';
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>
+

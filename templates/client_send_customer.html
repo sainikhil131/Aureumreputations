@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send WhatsApp Review Request - {{ business.name }} - Aureum Reputations</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #121212;
+            --primary-text: #ffffff;
+            --accent-gold: #D4AF37;
+            --card-border: #D4AF37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: var(--primary-bg);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-container {
+            background: linear-gradient(135deg, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.7) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .login-container:hover::before {
+            left: 100%;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--primary-text);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .login-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .login-header h1 i {
+            color: var(--accent-gold);
+            font-size: 28px;
+        }
+
+        .login-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .business-info {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .business-info h3 {
+            color: var(--accent-gold);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .business-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .login-form {
+            padding: 40px 30px;
+        }
+
+        .alert {
+            padding: 18px 24px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid rgba(34, 197, 94, 0.6);
+            color: #22c55e;
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.6);
+            color: #ef4444;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 12px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 16px 18px;
+            color: var(--primary-text);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1), 0 4px 20px rgba(212, 175, 55, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Professional Select Dropdown Styling */
+        .select-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .select-wrapper select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 50px;
+            background-image: none;
+        }
+
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 9px solid var(--accent-gold);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .select-wrapper:hover::after {
+            border-top-color: #FFD700;
+        }
+
+        .select-wrapper select:focus ~ .select-wrapper::after,
+        .select-wrapper select:active ~ .select-wrapper::after {
+            transform: translateY(-50%) rotate(180deg);
+            border-top-color: #FFD700;
+        }
+
+        .form-group select option {
+            background: #1a1a1a;
+            color: var(--primary-text);
+            padding: 14px 18px;
+            border: none;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .form-group select option:first-child {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .form-group select option:not(:first-child) {
+            color: var(--primary-text);
+            font-weight: 500;
+        }
+
+        .form-group select option:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .form-group select option:checked,
+        .form-group select option:selected {
+            background: rgba(212, 175, 55, 0.3);
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .phone-input {
+            position: relative;
+        }
+
+        .phone-prefix {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 15px;
+            z-index: 2;
+        }
+
+        .phone-input input {
+            padding-left: 55px;
+        }
+
+        /* Country Code Selector Styles */
+        .phone-input-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .country-code-wrapper {
+            flex: 0 0 auto;
+            min-width: 140px;
+        }
+
+        .country-code-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 16px 12px;
+            color: var(--primary-text);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4AF37' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+        }
+
+        .country-code-select:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .country-code-select:focus {
+            border-color: var(--accent-gold);
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1), 0 4px 20px rgba(212, 175, 55, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .country-code-select option {
+            background: #1a1a1a !important;
+            color: var(--primary-text) !important;
+            padding: 12px 15px !important;
+            font-size: 14px !important;
+        }
+
+        .phone-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .phone-input input {
+            padding-left: 18px;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #FFD700 100%);
+            color: #000000;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.6);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+        }
+
+        .back-link:hover {
+            color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        /* Form Toggle Styles */
+        .form-toggle {
+            margin-bottom: 30px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 16px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .toggle-btn:hover {
+            color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #FFD700 100%);
+            color: #000000;
+            font-weight: 700;
+        }
+
+        .toggle-btn i {
+            font-size: 16px;
+        }
+
+        /* Form Section Styles */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        /* File Upload Styles */
+        .file-upload-container {
+            position: relative;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .file-upload-area {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .file-upload-content i {
+            font-size: 48px;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .file-upload-content h3 {
+            color: var(--primary-text);
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .file-upload-content p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .file-requirements {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .file-requirements h4 {
+            color: var(--accent-gold);
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .file-requirements ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-requirements li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .file-requirements li::before {
+            content: '•';
+            color: var(--accent-gold);
+            position: absolute;
+            left: 0;
+        }
+
+        .file-selected {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-selected i {
+            color: var(--accent-gold);
+            font-size: 20px;
+        }
+
+        .file-selected .file-name {
+            flex: 1;
+            color: var(--primary-text);
+            font-weight: 500;
+        }
+
+        .remove-file {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 6px;
+            padding: 6px 8px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-file:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        /* Excel Preview Styles */
+        .excel-preview {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .excel-preview h4 {
+            color: var(--accent-gold);
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .preview-table th {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            position: sticky;
+            top: 0;
+        }
+
+        .preview-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--primary-text);
+        }
+
+        .preview-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .preview-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent-gold);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+                border-radius: 16px;
+                max-width: 380px;
+            }
+            
+            .login-header {
+                padding: 30px 25px;
+            }
+            
+            .login-header h1 {
+                font-size: 28px;
+            }
+            
+            .login-form {
+                padding: 30px 25px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+
+            .phone-input input {
+                padding-left: 50px;
+            }
+
+            .login-btn {
+                padding: 16px 32px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-header {
+                padding: 25px 20px;
+            }
+
+            .login-header h1 {
+                font-size: 24px;
+            }
+
+            .login-form {
+                padding: 25px 20px;
+            }
+
+            .login-btn {
+                padding: 14px 28px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fab fa-whatsapp"></i> Send Review Request</h1>
+            <p>Send personalized WhatsApp review requests to customers</p>
+            <div class="business-info">
+                <h3>{{ business.name }}</h3>
+                <p>Sending reviews for this business</p>
+            </div>
+        </div>
+
+        <div class="login-form">
+            {% if success %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> {{ success }}
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-toggle">
+                    <div class="toggle-buttons">
+                        <button type="button" class="toggle-btn active" data-mode="single">
+                            <i class="fas fa-user"></i> Single Customer
+                        </button>
+                        <button type="button" class="toggle-btn" data-mode="bulk">
+                            <i class="fas fa-file-excel"></i> Bulk Upload
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Single Customer Form -->
+                <div id="singleCustomerForm" class="form-section active">
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> Customer Name</label>
+                        <input type="text" 
+                               id="name" 
+                               name="name" 
+                               placeholder="Enter customer's full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                        <div class="phone-input-container">
+                            <div class="country-code-wrapper">
+                                <select id="country_code" name="country_code" class="country-code-select">
+                                    <option value="+91" data-flag="🇮🇳">+91 (India)</option>
+                                    <option value="+1" data-flag="🇺🇸">+1 (USA)</option>
+                                    <option value="+44" data-flag="🇬🇧">+44 (UK)</option>
+                                    <option value="+971" data-flag="🇦🇪">+971 (UAE)</option>
+                                    <option value="+966" data-flag="🇸🇦">+966 (Saudi Arabia)</option>
+                                    <option value="+65" data-flag="🇸🇬">+65 (Singapore)</option>
+                                    <option value="+60" data-flag="🇲🇾">+60 (Malaysia)</option>
+                                    <option value="+61" data-flag="🇦🇺">+61 (Australia)</option>
+                                    <option value="+49" data-flag="🇩🇪">+49 (Germany)</option>
+                                    <option value="+33" data-flag="🇫🇷">+33 (France)</option>
+                                    <option value="+39" data-flag="🇮🇹">+39 (Italy)</option>
+                                    <option value="+34" data-flag="🇪🇸">+34 (Spain)</option>
+                                    <option value="+7" data-flag="🇷🇺">+7 (Russia)</option>
+                                    <option value="+86" data-flag="🇨🇳">+86 (China)</option>
+                                    <option value="+81" data-flag="🇯🇵">+81 (Japan)</option>
+                                    <option value="+82" data-flag="🇰🇷">+82 (South Korea)</option>
+                                    <option value="+55" data-flag="🇧🇷">+55 (Brazil)</option>
+                                    <option value="+52" data-flag="🇲🇽">+52 (Mexico)</option>
+                                    <option value="+27" data-flag="🇿🇦">+27 (South Africa)</option>
+                                    <option value="+234" data-flag="🇳🇬">+234 (Nigeria)</option>
+                                </select>
+                            </div>
+                            <div class="phone-input">
+                                <input type="tel" 
+                                       id="phone" 
+                                       name="phone" 
+                                       placeholder="Enter phone number"
+                                       title="Please enter a valid phone number">
+                            </div>
+                        </div>
+                        <div class="form-help">
+                            <i class="fas fa-info"></i>
+                            <span id="phoneHelp">Enter 10-digit number without country code</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Upload Form -->
+                <div id="bulkUploadForm" class="form-section">
+                    <div class="form-group">
+                        <label for="excel_file"><i class="fas fa-file-excel"></i> Upload Excel File</label>
+                        <div class="file-upload-container">
+                            <input type="file" 
+                                   id="excel_file" 
+                                   name="excel_file" 
+                                   accept=".xlsx,.xls"
+                                   class="file-input">
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <div class="file-upload-content">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h3>Drop Excel file here or click to browse</h3>
+                                    <p>Supported formats: .xlsx, .xls</p>
+                                    <div class="file-requirements">
+                                        <h4>Required columns:</h4>
+                                        <ul>
+                                            <li><strong>Customer Name</strong> - Full name of the customer</li>
+                                            <li><strong>WhatsApp Number</strong> - Phone number with country code (e.g., 919876543210)</li>
+                                        </ul>
+                                        <p style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 10px;">
+                                            <strong>Note:</strong> Phone numbers should include country codes without + sign (e.g., 919876543210, 14155551234)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-selected" id="fileSelected" style="display: none;">
+                                <i class="fas fa-file-excel"></i>
+                                <span class="file-name"></span>
+                                <button type="button" class="remove-file" onclick="removeFile()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-help">
+                            <i class="fas fa-info"></i>
+                            Excel file should contain "Customer Name" and "WhatsApp Number" (with country code, no + sign) columns
+                        </div>
+                    </div>
+
+                    <div class="excel-preview" id="excelPreview" style="display: none;">
+                        <h4><i class="fas fa-eye"></i> File Preview</h4>
+                        <div class="preview-table-container">
+                            <table class="preview-table" id="previewTable">
+                                <thead></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="preview-info">
+                            <span id="recordCount">0 records found</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Send WhatsApp Message
+                </button>
+            </form>
+
+            <a href="/client-dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        // Toggle between single and bulk mode
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        const singleForm = document.getElementById('singleCustomerForm');
+        const bulkForm = document.getElementById('bulkUploadForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                
+                // Update active states
+                toggleButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show/hide forms
+                if (mode === 'single') {
+                    singleForm.classList.add('active');
+                    bulkForm.classList.remove('active');
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send WhatsApp Message';
+                } else {
+                    singleForm.classList.remove('active');
+                    bulkForm.classList.add('active');
+                    submitBtn.innerHTML = '<i class="fas fa-upload"></i> Process Excel File';
+                }
+            });
+        });
+
+        // File upload handling
+        const fileInput = document.getElementById('excel_file');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileSelected = document.getElementById('fileSelected');
+        const excelPreview = document.getElementById('excelPreview');
+
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            if (!file.name.match(/\.(xlsx|xls)$/)) {
+                alert('Please select a valid Excel file (.xlsx or .xls)');
+                return;
+            }
+
+            // Show selected file
+            fileUploadArea.style.display = 'none';
+            fileSelected.style.display = 'flex';
+            fileSelected.querySelector('.file-name').textContent = file.name;
+
+            // Read and preview Excel file
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    previewExcelData(jsonData);
+                } catch (error) {
+                    alert('Error reading Excel file. Please make sure it\'s a valid Excel file.');
+                    removeFile();
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Preview Excel data
+        function previewExcelData(data) {
+            if (data.length < 2) {
+                alert('Excel file must contain at least a header row and one data row.');
+                removeFile();
+                return;
+            }
+
+            const headers = data[0];
+            const rows = data.slice(1);
+
+            // Check for required columns
+            const nameColIndex = headers.findIndex(h => 
+                h && h.toString().toLowerCase().includes('name')
+            );
+            const phoneColIndex = headers.findIndex(h => 
+                h && (h.toString().toLowerCase().includes('phone') || 
+                      h.toString().toLowerCase().includes('whatsapp') ||
+                      h.toString().toLowerCase().includes('number'))
+            );
+
+            if (nameColIndex === -1 || phoneColIndex === -1) {
+                alert('Excel file must contain "Customer Name" and "WhatsApp Number" columns.');
+                removeFile();
+                return;
+            }
+
+            // Build preview table
+            const previewTable = document.getElementById('previewTable');
+            const thead = previewTable.querySelector('thead');
+            const tbody = previewTable.querySelector('tbody');
+
+            // Clear existing content
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Add headers
+            const headerRow = document.createElement('tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header || 'Column';
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            // Add data rows (limit to first 10 for preview)
+            const previewRows = rows.slice(0, 10);
+            previewRows.forEach(row => {
+                const tr = document.createElement('tr');
+                headers.forEach((header, index) => {
+                    const td = document.createElement('td');
+                    td.textContent = row[index] || '';
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            // Show preview
+            excelPreview.style.display = 'block';
+            document.getElementById('recordCount').textContent = `${rows.length} records found`;
+        }
+
+        // Remove file
+        function removeFile() {
+            fileInput.value = '';
+            fileUploadArea.style.display = 'block';
+            fileSelected.style.display = 'none';
+            excelPreview.style.display = 'none';
+        }
+
+        // Country code change handler
+        const countryCodeSelect = document.getElementById('country_code');
+        const phoneHelp = document.getElementById('phoneHelp');
+        
+        const phoneFormats = {
+            '+91': { digits: 10, example: '9876543210', help: 'Enter 10-digit number without country code' },
+            '+1': { digits: 10, example: '2125551234', help: 'Enter 10-digit number without country code' },
+            '+44': { digits: 10, example: '7911123456', help: 'Enter 10-digit number without country code' },
+            '+971': { digits: 9, example: '501234567', help: 'Enter 9-digit number without country code' },
+            '+966': { digits: 9, example: '501234567', help: 'Enter 9-digit number without country code' },
+            '+65': { digits: 8, example: '91234567', help: 'Enter 8-digit number without country code' },
+            '+60': { digits: 9, example: '123456789', help: 'Enter 9-digit number without country code' },
+            '+61': { digits: 9, example: '412345678', help: 'Enter 9-digit number without country code' },
+            '+49': { digits: 11, example: '15123456789', help: 'Enter 11-digit number without country code' },
+            '+33': { digits: 9, example: '612345678', help: 'Enter 9-digit number without country code' },
+            '+39': { digits: 10, example: '3123456789', help: 'Enter 10-digit number without country code' },
+            '+34': { digits: 9, example: '612345678', help: 'Enter 9-digit number without country code' },
+            '+7': { digits: 10, example: '9123456789', help: 'Enter 10-digit number without country code' },
+            '+86': { digits: 11, example: '13812345678', help: 'Enter 11-digit number without country code' },
+            '+81': { digits: 10, example: '9012345678', help: 'Enter 10-digit number without country code' },
+            '+82': { digits: 10, example: '1012345678', help: 'Enter 10-digit number without country code' },
+            '+55': { digits: 11, example: '11987654321', help: 'Enter 11-digit number without country code' },
+            '+52': { digits: 10, example: '5512345678', help: 'Enter 10-digit number without country code' },
+            '+27': { digits: 9, example: '821234567', help: 'Enter 9-digit number without country code' },
+            '+234': { digits: 10, example: '8012345678', help: 'Enter 10-digit number without country code' }
+        };
+
+        countryCodeSelect.addEventListener('change', function() {
+            const selectedCode = this.value;
+            const format = phoneFormats[selectedCode];
+            const phoneInput = document.getElementById('phone');
+            
+            if (format) {
+                phoneInput.placeholder = format.example;
+                phoneHelp.textContent = format.help;
+                phoneInput.setAttribute('maxlength', format.digits);
+            }
+        });
+
+        // Initialize with default country code
+        countryCodeSelect.dispatchEvent(new Event('change'));
+
+        // Auto-format phone number based on selected country
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const selectedCode = countryCodeSelect.value;
+            const format = phoneFormats[selectedCode];
+            
+            let value = e.target.value.replace(/\D/g, '');
+            if (format && value.length > format.digits) {
+                value = value.substring(0, format.digits);
+            }
+            e.target.value = value;
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const activeMode = document.querySelector('.toggle-btn.active').getAttribute('data-mode');
+
+            if (activeMode === 'single') {
+                const phone = document.getElementById('phone').value;
+                const name = document.getElementById('name').value;
+                const countryCode = document.getElementById('country_code').value;
+                const format = phoneFormats[countryCode];
+
+                if (!format || phone.length !== format.digits) {
+                    e.preventDefault();
+                    alert(`Please enter a valid ${format.digits}-digit phone number for ${countryCode}`);
+                    return;
+                }
+
+                if (!name.trim()) {
+                    e.preventDefault();
+                    alert('Please enter customer name');
+                    return;
+                }
+            } else {
+                const fileInput = document.getElementById('excel_file');
+                
+                if (!fileInput.files.length) {
+                    e.preventDefault();
+                    alert('Please select an Excel file');
+                    return;
+                }
+            }
+
+            // Show loading state
+            const btn = document.querySelector('.login-btn');
+            if (activeMode === 'single') {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            } else {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            }
+            btn.disabled = true;
+        });
+    </script>
+</body>
+</html>

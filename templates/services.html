@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Aureum Reputations</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    <style>
+        /* Premium Services Page Styles */
+        body {
+            position: relative;
+            overflow-x: hidden;
+            background: #000000;
+        }
+
+        /* Sophisticated Background */
+        .services-bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1 !important;
+            overflow: hidden;
+            pointer-events: none;
+            background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.02) 0%, transparent 50%);
+        }
+
+        .services-bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.3;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        /* Hero Section - Premium Design */
+        .services-hero {
+            text-align: center;
+            padding: 90px 40px 15px 40px;
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services-hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 60%);
+            filter: blur(100px);
+            animation: heroGlowPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes heroGlowPulse {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .services-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+        }
+
+        .services-hero h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            color: #ffffff;
+        }
+
+        .services-hero h1 .accent {
+            color: #D4AF37;
+        }
+
+        .services-hero p {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+        }
+
+        /* Services Grid - Premium Layout */
+        .services-grid {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 40px 60px 40px;
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 50px;
+            opacity: 1 !important;
+            visibility: visible !important;
+            min-height: 100px;
+        }
+
+        /* Ensure all children are visible */
+        .services-grid > * {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+
+        /* Force display for service cards */
+        .services-grid .service-card {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            position: relative !important;
+        }
+
+        /* Premium Service Cards */
+        .service-card {
+            background: linear-gradient(145deg, rgba(15, 15, 15, 0.98) 0%, rgba(10, 10, 10, 0.95) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 24px;
+            padding: 60px;
+            position: relative !important;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            /* Make cards visible immediately - no animation delay */
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            z-index: 10 !important;
+            min-height: 400px;
+        }
+
+        /* Remove any loading state that might hide cards */
+        body.loading .service-card {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+
+        /* Ensure service card content is visible */
+        .service-card * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+ 
+
+        .service-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+
+        .service-icon-wrapper {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #FFD700, #D4AF37);
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover .service-icon-wrapper {
+            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%);
+            border-color: transparent;
+            transform: translateY(-5px) rotate(-5deg);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .service-card:hover .service-icon-wrapper::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            font-size: 2.8em;
+            color: var(--accent-gold);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-card:hover .service-icon {
+            color: #000000;
+            transform: scale(1.15);
+        }
+
+        .service-title-wrapper {
+            flex: 1;
+        }
+
+        .service-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .service-subtitle {
+            font-size: 0.95em;
+            color: var(--accent-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .service-description {
+            font-size: 1.08em;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.9;
+            margin-bottom: 35px;
+            font-weight: 400;
+        }
+
+        .service-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            margin: 35px 0;
+        }
+
+        /* Premium Feature List */
+        .service-features {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            font-size: 1.05em;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            padding: 12px 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .service-features li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .service-features li:hover {
+            transform: translateX(15px);
+            color: #ffffff;
+        }
+
+        .service-features li:hover::before {
+            opacity: 1;
+        }
+
+        .service-features li i {
+            color: var(--accent-gold);
+            font-size: 1.15em;
+            margin-top: 4px;
+            flex-shrink: 0;
+            transition: transform 0.4s ease;
+        }
+
+        .service-features li:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .service-features li strong {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
+
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            color: var(--accent-gold);
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-top: 30px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-badge {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.15) 100%);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Premium Back Button */
+        .back-btn-container {
+            text-align: center;
+            padding: 50px 40px 30px 40px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .back-btn i {
+            transition: transform 0.4s ease;
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-5px);
+        }
+
+
+
+        /* Responsive Design - Enhanced Mobile Optimization */
+        @media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: 1fr !important;
+                padding: 15px 30px 50px 30px;
+                gap: 40px;
+                display: grid !important;
+            }
+
+            .services-hero {
+                padding: 100px 30px 15px 30px;
+            }
+
+            .service-card {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .services-hero {
+                padding: 90px 25px 15px 25px;
+            }
+
+            .services-hero h1 {
+                font-size: 3.2em;
+                letter-spacing: -1.5px;
+            }
+
+            .services-hero p {
+                font-size: 1.15em;
+                max-width: 650px;
+            }
+
+            .services-grid {
+                padding: 15px 25px 45px 25px;
+                gap: 35px;
+            }
+
+            .service-card {
+                padding: 45px 30px;
+            }
+
+            .back-btn-container {
+                padding: 40px 25px 25px 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-hero {
+                padding: 100px 20px 15px 20px;
+            }
+
+            .services-hero h1 {
+                font-size: 2.5em;
+                letter-spacing: -1px;
+                line-height: 1.2;
+            }
+
+            .services-hero p {
+                font-size: 1.05em;
+                line-height: 1.7;
+                max-width: 600px;
+            }
+
+            .services-grid {
+                padding: 15px 20px 40px 20px;
+                gap: 30px;
+            }
+
+            .service-card {
+                padding: 35px 25px;
+                border-radius: 20px;
+            }
+
+            .service-header {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .service-icon-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+
+            .service-icon {
+                font-size: 2.5em;
+            }
+
+            .service-card h2 {
+                font-size: 1.8em;
+                text-align: center;
+            }
+
+            .service-subtitle {
+                font-size: 0.9em;
+                text-align: center;
+            }
+
+            .service-description {
+                font-size: 1em;
+                text-align: center;
+            }
+
+            .service-features li {
+                font-size: 1em;
+            }
+
+            .back-btn-container {
+                padding: 35px 20px 20px 20px;
+            }
+
+            .back-btn {
+                padding: 14px 35px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .services-hero {
+                padding: 90px 18px 12px 18px;
+            }
+
+            .services-hero h1 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .services-hero p {
+                font-size: 1em;
+                line-height: 1.6;
+            }
+
+            .services-grid {
+                padding: 12px 18px 35px 18px;
+                gap: 25px;
+            }
+
+            .service-card {
+                padding: 30px 22px;
+                border-radius: 18px;
+            }
+
+            .service-icon-wrapper {
+                width: 70px;
+                height: 70px;
+                border-radius: 18px;
+            }
+
+            .service-icon {
+                font-size: 2.2em;
+            }
+
+            .service-card h2 {
+                font-size: 1.6em;
+            }
+
+            .service-subtitle {
+                font-size: 0.85em;
+            }
+
+            .service-description {
+                font-size: 0.95em;
+                margin-bottom: 30px;
+            }
+
+            .service-features {
+                gap: 15px;
+            }
+
+            .service-features li {
+                font-size: 0.95em;
+                padding: 10px 0;
+            }
+
+            .service-badge {
+                padding: 8px 20px;
+                font-size: 0.85em;
+                margin-top: 25px;
+            }
+
+            .back-btn {
+                padding: 13px 32px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-hero {
+                padding: 85px 16px 10px 16px;
+            }
+
+            .services-hero h1 {
+                font-size: 1.75em;
+                margin-bottom: 12px;
+            }
+
+            .services-hero p {
+                font-size: 0.95em;
+            }
+
+            .services-grid {
+                padding: 10px 16px 30px 16px;
+                gap: 22px;
+            }
+
+            .service-card {
+                padding: 28px 20px;
+                border-radius: 16px;
+            }
+
+            .service-icon-wrapper {
+                width: 65px;
+                height: 65px;
+                border-radius: 16px;
+            }
+
+            .service-icon {
+                font-size: 2em;
+            }
+
+            .service-card h2 {
+                font-size: 1.45em;
+            }
+
+            .service-subtitle {
+                font-size: 0.8em;
+                letter-spacing: 1.5px;
+            }
+
+            .service-description {
+                font-size: 0.92em;
+                margin-bottom: 28px;
+            }
+
+            .service-features {
+                gap: 13px;
+            }
+
+            .service-features li {
+                font-size: 0.92em;
+                padding: 9px 0;
+                gap: 15px;
+            }
+
+            .service-features li i {
+                font-size: 1.1em;
+            }
+
+            .service-badge {
+                padding: 8px 18px;
+                font-size: 0.8em;
+                margin-top: 22px;
+            }
+
+            .back-btn-container {
+                padding: 30px 16px 18px 16px;
+            }
+
+            .back-btn {
+                padding: 12px 28px;
+                font-size: 0.85em;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .services-hero {
+                padding: 80px 12px 10px 12px;
+            }
+
+            .services-hero h1 {
+                font-size: 1.6em;
+            }
+
+            .services-hero p {
+                font-size: 0.9em;
+            }
+
+            .services-grid {
+                padding: 10px 12px 28px 12px;
+            }
+
+            .service-card {
+                padding: 24px 18px;
+            }
+
+            .service-icon-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+
+            .service-icon {
+                font-size: 1.9em;
+            }
+
+            .service-card h2 {
+                font-size: 1.35em;
+            }
+
+            .service-description {
+                font-size: 0.9em;
+            }
+
+            .service-features li {
+                font-size: 0.9em;
+            }
+
+            .back-btn {
+                padding: 11px 24px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head><body>
+ 
+
+    <!-- Consultation Modal -->
+    <div class="modal-overlay" id="consultationModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <i class="fas fa-calendar-check modal-icon"></i>
+                <h2>Get Your Free Consultation</h2>
+                <p>Let's discuss how we can elevate your brand's reputation</p>
+            </div>
+            <form class="consultation-form" id="consultationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-name">
+                            <i class="fas fa-user"></i> Full Name *
+                        </label>
+                        <input type="text" id="consult-name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-business">
+                            <i class="fas fa-building"></i> Business Name *
+                        </label>
+                        <input type="text" id="consult-business" name="business_name" placeholder="Your Company" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="consult-email">
+                            <i class="fas fa-envelope"></i> Email Address *
+                        </label>
+                        <input type="email" id="consult-email" name="email" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consult-phone">
+                            <i class="fas fa-phone"></i> Phone Number *
+                        </label>
+                        <input type="tel" id="consult-phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="consult-service">
+                        <i class="fas fa-star"></i> Service Interested In *
+                    </label>
+                    <select id="consult-service" name="service" required>
+                        <option value="">Select a service...</option>
+                        <option value="Review Generation & Growth">Review Generation & Growth</option>
+                        <option value="Fake Review Removal">Fake Review Removal</option>
+                        <option value="Crisis Management">Crisis Management</option>
+                        <option value="Multi-Platform Management">Multi-Platform Management</option>
+                        <option value="Competitor Monitoring">Competitor Monitoring</option>
+                        <option value="Full Package">Full Package - All Services</option>
+                        <option value="Other">Other / Not Sure</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="consult-message">
+                        <i class="fas fa-comment-dots"></i> How Can We Help You? *
+                    </label>
+                    <textarea id="consult-message" name="message" rows="5" placeholder="Tell us about your reputation management needs, challenges you're facing, or goals you want to achieve..." required></textarea>
+                </div>
+                <button type="submit" class="modal-submit-btn">
+                    <i class="fas fa-paper-plane"></i> Request Free Consultation
+                </button>
+                <div class="form-message-modal"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="services-bg-animation"></div>
+
+    <header>
+        <div class="header-logo">
+            <img src="{{ url_for('static', filename='LOGOS.png') }}" alt="Aureum Reputations" class="header-logo-img">
+        </div>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="mainNav">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('index') }}#services">Services</a>
+            <a href="{{ url_for('index') }}#aureum-core">Aureum Core</a>
+            <a href="{{ url_for('index') }}#mission">Mission</a>
+            <a href="{{ url_for('index') }}#testimonials">Testimonials</a>
+            <a href="{{ url_for('index') }}#contact">Contact</a>
+            <button class="nav-consultation-btn" id="navConsultationBtn">
+                <i class="fas fa-calendar-check"></i>
+                <span>Book a Consultation</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="services-hero">
+        <h1>Our <span class="accent">Services</span></h1>
+        <p>Comprehensive reputation management solutions designed to build, protect, and elevate your digital credibility across every major platform</p>
+    </section>
+
+    <section class="services-grid">
+        <!-- Service Card 1: Review Generation -->
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-icon-wrapper">
+                    <i class="fas fa-star service-icon"></i>
+                </div>
+                <div class="service-title-wrapper">
+                    <div class="service-subtitle">Most Popular</div>
+                    <h2>Review Generation & Growth</h2>
+                </div>
+            </div>
+            <p class="service-description">Build authentic, scalable review profiles across all major platforms with our automated yet personalized approach that drives measurable results and sustainable growth.</p>
+            <div class="service-divider"></div>
+            <ul class="service-features">
+                <li><i class="fas fa-check-circle"></i><span><strong>Multi-Platform Integration</strong> – Google, Yelp, BBB, Clutch, Airbnb, GoodFirms</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Automated Review Requests</strong> – Smart timing for maximum response rates</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Real-Time Monitoring</strong> – Instant alerts for new reviews across all platforms</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Response Management</strong> – Professional, personalized replies to all feedback</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Advanced Analytics</strong> – Track growth, sentiment trends, and ROI</span></li>
+            </ul>
+            <span class="service-badge">⭐ Most Popular</span>
+        </div>
+
+        <!-- Service Card 2: Crisis Management -->
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-icon-wrapper">
+                    <i class="fas fa-shield-alt service-icon"></i>
+                </div>
+                <div class="service-title-wrapper">
+                    <div class="service-subtitle">24/7 Protection</div>
+                    <h2>Crisis Management</h2>
+                </div>
+            </div>
+            <p class="service-description">Rapid response solutions to protect your brand during online attacks, negative review floods, or reputation emergencies with round-the-clock expert support and strategic intervention.</p>
+            <div class="service-divider"></div>
+            <ul class="service-features">
+                <li><i class="fas fa-check-circle"></i><span><strong>24/7 Reputation Monitoring</strong> – Continuous threat detection and alerts</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Fake Review Removal</strong> – Expert identification and removal assistance</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Crisis Communication</strong> – Strategic response planning and execution</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Brand Protection Protocols</strong> – Proactive defense strategies</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Recovery Campaigns</strong> – Rebuild trust and restore credibility</span></li>
+            </ul>
+            <span class="service-badge">🛡️ Rapid Response</span>
+        </div>
+
+        <!-- Service Card 3: SEO & Citation -->
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-icon-wrapper">
+                    <i class="fas fa-search service-icon"></i>
+                </div>
+                <div class="service-title-wrapper">
+                    <div class="service-subtitle">Visibility Boost</div>
+                    <h2>SEO & Citation Optimization</h2>
+                </div>
+            </div>
+            <p class="service-description">Enhance your online visibility and ensure consistent business information across 50+ global directories for maximum local search impact and improved discoverability.</p>
+            <div class="service-divider"></div>
+            <ul class="service-features">
+                <li><i class="fas fa-check-circle"></i><span><strong>Local SEO Optimization</strong> – Boost local search rankings and visibility</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Citation Management</strong> – 50+ directory listings and updates</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>NAP Consistency</strong> – Unified business information everywhere</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Schema Markup</strong> – Enhanced search engine visibility</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Multi-Location Support</strong> – Seamless management of multiple locations</span></li>
+            </ul>
+            <span class="service-badge">📊 SEO Focused</span>
+        </div>
+
+        <!-- Service Card 4: Social Media -->
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-icon-wrapper">
+                    <i class="fas fa-hashtag service-icon"></i>
+                </div>
+                <div class="service-title-wrapper">
+                    <div class="service-subtitle">Beta Program</div>
+                    <h2>Social Media Presence</h2>
+                </div>
+            </div>
+            <p class="service-description">Curated engagement and intelligent automation to elevate your online identity across social platforms with strategic content, community management, and data-driven growth.</p>
+            <div class="service-divider"></div>
+            <ul class="service-features">
+                <li><i class="fas fa-check-circle"></i><span><strong>Social Strategy</strong> – Comprehensive audit, planning, and execution</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Content Curation</strong> – Professional posts perfectly aligned with your brand</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Engagement Automation</strong> – Smart, authentic audience interactions</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Community Management</strong> – Build and nurture loyal followers</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Performance Analytics</strong> – Track growth, engagement, and conversions</span></li>
+            </ul>
+            <span class="service-badge">🚀 Beta Access</span>
+        </div>
+
+        <!-- Service Card 5: Aureum Core -->
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-icon-wrapper">
+                    <i class="fas fa-brain service-icon"></i>
+                </div>
+                <div class="service-title-wrapper">
+                    <div class="service-subtitle">AI-Powered</div>
+                    <h2>Aureum Core Intelligence</h2>
+                </div>
+            </div>
+            <p class="service-description">Our proprietary AI-powered ecosystem that powers all our services with precision, authenticity, and real-time insights for optimal results and unmatched performance.</p>
+            <div class="service-divider"></div>
+            <ul class="service-features">
+                <li><i class="fas fa-check-circle"></i><span><strong>Real-Time Analytics</strong> – Live reputation monitoring and insights</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Predictive Detection</strong> – AI-powered threat identification and prevention</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Campaign Optimization</strong> – Automated performance tuning and enhancement</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Sentiment Analysis</strong> – Deep understanding of customer perception</span></li>
+                <li><i class="fas fa-check-circle"></i><span><strong>Custom Dashboards</strong> – Comprehensive reporting and actionable insights</span></li>
+            </ul>
+            <span class="service-badge">🤖 AI-Powered</span>
+        </div>
+    </section>
+
+    <div class="back-btn-container">
+        <a href="{{ url_for('index') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+    </div>
+
+    <footer class="footer">
+        Contact: <span class="accent">info@aureumreputations.com</span>
+        <br>
+        &copy; 2025 Aureum Reputations. All rights reserved.
+    </footer>
+
+    <!-- WhatsApp Contact Button -->
+    <a href="https://wa.me/918897636665" target="_blank" rel="noopener noreferrer" class="whatsapp-button" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Make URL prefix available to JavaScript
+        window.APP_ROOT = '{{ url_prefix }}';
+
+        // Disable scroll animations for services page - make cards visible immediately
+        window.DISABLE_SCROLL_ANIMATIONS = true;
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <script>
+        // Force all service cards to be visible immediately
+        (function() {
+            // Remove loading class
+            document.body.classList.remove('loading');
+
+            // Function to make cards visible
+            function makeCardsVisible() {
+                const serviceCards = document.querySelectorAll('.service-card');
+                const servicesGrid = document.querySelector('.services-grid');
+
+                console.log('Making service cards visible:', serviceCards.length);
+
+                // Make grid visible
+                if (servicesGrid) {
+                    servicesGrid.style.display = 'grid';
+                    servicesGrid.style.opacity = '1';
+                    servicesGrid.style.visibility = 'visible';
+                }
+
+                // Make each card visible
+                serviceCards.forEach(function(card, index) {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                    card.style.transform = 'none';
+                    card.classList.add('visible');
+                    card.classList.remove('card'); // Remove 'card' class to prevent observer from hiding it
+                });
+            }
+
+            // Run immediately
+            makeCardsVisible();
+
+            // Run on DOMContentLoaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', makeCardsVisible);
+            }
+
+            // Run after a short delay as backup
+            setTimeout(makeCardsVisible, 100);
+            setTimeout(makeCardsVisible, 500);
+        })();
+    </script>
+</body>
+</html>
+

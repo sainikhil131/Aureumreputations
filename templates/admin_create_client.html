@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Client Account - Aureum Reputations</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --primary-text: #ffffff;
+            --accent-gold: #D4AF37;
+            --text-muted: #999;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --error-red: #ef4444;
+            --success-green: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: backgroundPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            border-radius: 2px;
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-gold) 50%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+        .header .icon {
+            display: inline-block;
+            font-size: 0.8em;
+            color: var(--accent-gold);
+            margin-right: 15px;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .alert {
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(20px);
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .alert:hover::before {
+            left: 100%;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #4ade80;
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+        }
+
+        .main-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 24px;
+            padding: 0;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(212, 175, 55, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+            transition: left 1s;
+        }
+
+        .main-card:hover::before {
+            left: 100%;
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 30px 35px;
+            position: relative;
+        }
+
+        .info-section h3 {
+            color: var(--accent-gold);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-section .icon {
+            font-size: 1.2em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .info-section p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .form-section {
+            padding: 40px 35px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 13px;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 18px 22px;
+            color: var(--primary-text);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            padding: 10px;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 
+                0 0 0 4px rgba(212, 175, 55, 0.1),
+                0 8px 32px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-help {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-style: italic;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #FFD700 100%);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .back-link:hover {
+            color: var(--accent-gold);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateX(-5px);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .main-card {
+                border-radius: 20px;
+            }
+
+            .info-section,
+            .form-section {
+                padding: 25px 20px;
+            }
+
+            .form-group select,
+            .form-group input {
+                padding: 16px 18px;
+                font-size: 15px;
+            }
+
+            .submit-btn {
+                padding: 18px 25px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .info-section,
+            .form-section {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-user-plus icon"></i>
+                Create Client Account
+            </h1>
+            <p>Grant dashboard access to your business clients</p>
+        </div>
+
+        {% if success %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            {{ success }}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="main-card">
+            <div class="info-section">
+                <h3>
+                    <i class="fas fa-info-circle icon"></i>
+                    Client Account Setup
+                </h3>
+                <p>
+                    Create a secure dashboard account for your client. They will receive login credentials via email 
+                    and be required to change their password on first login for security.
+                </p>
+            </div>
+
+            <div class="form-section">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="business_id">
+                            <i class="fas fa-building"></i>
+                            Select Business
+                        </label>
+                        <select id="business_id" name="business_id" required>
+                            <option value="">Choose a business...</option>
+                            {% for business in businesses %}
+                            <option value="{{ business.id }}">{{ business.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-help">
+                            <i class="fas fa-lightbulb"></i>
+                            The client will have access to this business's review dashboard
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Client Email Address
+                        </label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               placeholder="Enter client's email address"
+                               required>
+                        <div class="form-help">
+                            <i class="fas fa-paper-plane"></i>
+                            Login credentials will be sent to this email address
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Client Account
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="back-section">
+            <a href="/admin" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Admin Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and loading state
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const businessId = document.getElementById('business_id').value;
+            const email = document.getElementById('email').value.trim();
+
+            if (!businessId || !email) {
+                e.preventDefault();
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Show loading state
+            const btn = document.querySelector('.submit-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account & Sending Email...';
+            btn.disabled = true;
+        });
+
+        // Enhanced select styling
+        const selectElement = document.getElementById('business_id');
+        selectElement.addEventListener('change', function() {
+            if (this.value) {
+                this.style.color = 'var(--primary-text)';
+            } else {
+                this.style.color = 'rgba(255, 255, 255, 0.4)';
+            }
+        });
+
+        // Initial select styling
+        if (!selectElement.value) {
+            selectElement.style.color = 'rgba(255, 255, 255, 0.4)';
+        }
+    </script>
+</body>
+</html>

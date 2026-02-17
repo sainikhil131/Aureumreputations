@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Aureum Reputations</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #121212;
+            --primary-text: #ffffff;
+            --accent-gold: #D4AF37;
+            --card-border: #D4AF37;
+            --text-muted: #888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: var(--primary-bg);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            padding: 15px 10px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--primary-text);
+        }
+
+        .dashboard-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .stat-card .icon {
+            font-size: 2.5em;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .stat-card .number {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action Buttons */
+        .actions-section {
+            margin-bottom: 40px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--primary-text);
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+            text-decoration: none;
+            color: var(--primary-text);
+        }
+
+        .action-card .icon {
+            font-size: 2em;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .action-card .title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .action-card .description {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        .action-card.danger .icon {
+            color: #ef4444;
+        }
+
+        .action-card.danger:hover {
+            border-color: #ef4444;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+        }
+
+        /* Table Section */
+        .table-section {
+            margin-top: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary-text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .business-name {
+            font-weight: 600;
+            font-size: 1.05em;
+            color: var(--primary-text);
+        }
+
+        .place-id {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: var(--accent-gold);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .google-link {
+            color: var(--accent-gold);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .google-link:hover {
+            color: #FFD700;
+        }
+
+        /* Action Buttons in Table */
+        .table-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-view:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-preview {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-preview:hover {
+            background: rgba(34, 197, 94, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a78bfa;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-edit:hover {
+            background: rgba(168, 85, 247, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .icon {
+            font-size: 4em;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: var(--primary-text);
+        }
+
+        .empty-state p {
+            font-size: 1.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2.2em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            th, td {
+                padding: 15px 10px;
+                font-size: 0.9em;
+            }
+
+            .table-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn {
+                font-size: 0.8em;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Business Management Dashboard</h1>
+            <p class="subtitle">Manage your businesses and monitor review performance</p>
+        </div>
+
+        <!-- Alerts -->
+        {% if success %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            {{ success }}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="number">{{ businesses|length if businesses else 0 }}</div>
+                <div class="label">Total Businesses</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="number">4.8</div>
+                <div class="label">Average Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="number">+12%</div>
+                <div class="label">Growth This Month</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+            <div class="actions-grid">
+                <a href="/add-business" class="action-card">
+                    <div class="icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="title">Add New Business</div>
+                    <div class="description">Register a new business location for review management</div>
+                </a>
+                
+                <a href="/admin/create-client" class="action-card">
+                    <div class="icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="title">Create Client Account</div>
+                    <div class="description">Grant dashboard access to business clients</div>
+                </a>
+                
+                <a href="/send-customer" class="action-card">
+                    <div class="icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="title">Send Review Request</div>
+                    <div class="description">Send WhatsApp review requests to customers</div>
+                </a>
+                
+                <a href="/logout" class="action-card danger">
+                    <div class="icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="title">Logout</div>
+                    <div class="description">Sign out of your admin account</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Businesses Table -->
+        {% if businesses %}
+        <div class="table-section">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i>
+                Your Businesses
+            </h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Name</th>
+                            <th>Place ID</th>
+                            <th>Google Maps</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in businesses %}
+                        <tr>
+                            <td>
+                                <div class="business-name">{{ b.name }}</div>
+                            </td>
+                            <td>
+                                <code class="place-id">{{ b.google_place_id[:20] if b.google_place_id else 'N/A' }}...</code>
+                            </td>
+                            <td>
+                                <a href="{{ b.google_review_link }}" target="_blank" class="google-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    View on Maps
+                                </a>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a class="btn btn-view" href="/dashboard/{{ b.id }}">
+                                        <i class="fas fa-chart-bar"></i>
+                                        Analytics
+                                    </a>
+                                    <a class="btn btn-preview" href="/feedback/{{ b.id }}" target="_blank">
+                                        <i class="fas fa-eye"></i>
+                                        Preview
+                                    </a>
+                                    <a class="btn btn-edit" href="/edit-business/{{ b.id }}">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <form style="display: inline;" method="POST" action="/delete-business/{{ b.id }}" onsubmit="return confirmDelete('{{ b.name }}')">
+                                        <button type="submit" class="btn btn-delete">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3>No businesses yet</h3>
+            <p>Get started by adding your first business location</p>
+        </div>
+        {% endif %}
+
+        <!-- Client Accounts Table -->
+        {% if clients %}
+        <div class="table-section">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i>
+                Client Accounts
+            </h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Business</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>
+                                <div class="business-name">{{ client.email }}</div>
+                            </td>
+                            <td>
+                                <span class="place-id">{{ client.businesses.name if client.businesses else 'N/A' }}</span>
+                            </td>
+                            <td>
+                                {% if client.is_temporary_password %}
+                                <span style="color: #f59e0b; font-weight: 600;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Temporary Password
+                                </span>
+                                {% else %}
+                                <span style="color: #22c55e; font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i>
+                                    Active
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="review-date">{{ client.created_at[:10] if client.created_at else 'N/A' }}</span>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <form style="display: inline;" method="POST" action="/admin/delete-client/{{ client.id }}" onsubmit="return confirmDeleteClient('{{ client.email }}')">
+                                        <button type="submit" class="btn btn-delete">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function confirmDelete(businessName) {
+            return confirm('⚠️ WARNING: This will delete "' + businessName + '" and ALL associated reviews permanently!\n\nThis action cannot be undone. Are you sure?');
+        }
+
+        function confirmDeleteClient(clientEmail) {
+            return confirm('⚠️ WARNING: This will delete the client account for "' + clientEmail + '" permanently!\n\nThe client will lose access to their dashboard. This action cannot be undone. Are you sure?');
+        }
+    </script>
+</body>
+</html>

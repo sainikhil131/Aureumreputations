@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ business.name }} - Reviews Analysis - Aureum Reputations</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGOS.png') }}?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #121212;
+            --primary-text: #ffffff;
+            --accent-gold: #D4AF37;
+            --card-border: #D4AF37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: var(--primary-bg);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dashboard-container {
+            background: linear-gradient(135deg, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.7) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .dashboard-container:hover::before {
+            left: 100%;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--primary-text);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header h1 i {
+            color: var(--accent-gold);
+            font-size: 28px;
+        }
+
+        .dashboard-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .review-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 25px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-top: 15px;
+        }
+
+        .dashboard-content {
+            padding: 40px 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-bottom: 30px;
+            padding: 12px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+        }
+
+        .back-link:hover {
+            color: #FFD700;
+            transform: translateY(-2px);
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .reviews-table-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .reviews-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .reviews-table th {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            color: var(--accent-gold);
+            padding: 20px 18px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+        }
+
+        .reviews-table th i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .reviews-table td {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--primary-text);
+            font-size: 14px;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .reviews-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .reviews-table tr:hover td {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .rating-good {
+            color: #22c55e;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rating-bad {
+            color: #ef4444;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rating-stars {
+            font-size: 16px;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .review-comment {
+            max-width: 300px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .review-date {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 60px 30px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .no-reviews i {
+            font-size: 48px;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .no-reviews h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary-text);
+        }
+
+        .no-reviews p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                margin: 10px;
+                border-radius: 16px;
+            }
+            
+            .dashboard-header {
+                padding: 30px 25px;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 24px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .dashboard-content {
+                padding: 30px 20px;
+            }
+
+            .reviews-table-container {
+                overflow-x: auto;
+            }
+
+            .reviews-table th,
+            .reviews-table td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .review-comment {
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .dashboard-header {
+                padding: 25px 20px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 20px;
+            }
+
+            .dashboard-content {
+                padding: 25px 15px;
+            }
+
+            .reviews-table th,
+            .reviews-table td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .review-comment {
+                max-width: 150px;
+            }
+
+            .back-link {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>
+                <i class="fas fa-chart-line"></i> 
+                {{ business.name }}
+            </h1>
+            <p>Customer Reviews & Feedback Analysis</p>
+            <div class="review-count">
+                <i class="fas fa-star"></i>
+                {{ count }} Total Reviews
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <a href="/admin" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Businesses
+            </a>
+
+            {% if reviews %}
+            <div class="reviews-table-container">
+                <table class="reviews-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user"></i> Customer</th>
+                            <th><i class="fas fa-star"></i> Rating</th>
+                            <th><i class="fas fa-comment"></i> Comment</th>
+                            <th><i class="fas fa-calendar"></i> Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in reviews %}
+                        <tr>
+                            <td class="customer-name">{{ r.customer_name }}</td>
+                            
+                            {% if r.rating >= 4 %}
+                            <td class="rating-good">
+                                {{ r.rating }}
+                                <span class="rating-stars">⭐</span>
+                            </td>
+                            {% else %}
+                            <td class="rating-bad">
+                                {{ r.rating }}
+                                <span class="rating-stars">⭐</span>
+                            </td>
+                            {% endif %}
+
+                            <td class="review-comment">{{ r.comment }}</td>
+                            <td class="review-date">{{ r.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-reviews">
+                <i class="fas fa-inbox"></i>
+                <h3>No Reviews Yet</h3>
+                <p>This business hasn't received any customer reviews yet. Start sending review requests to collect feedback!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add loading animation for table rows
+        const tableRows = document.querySelectorAll('.reviews-table tbody tr');
+        tableRows.forEach((row, index) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                row.style.transition = 'all 0.5s ease';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    </script>
+</body>
+</html>
