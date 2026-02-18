@@ -1232,6 +1232,18 @@ def client_send_customer():
                     # Format phone number with country code
                     full_phone = country_code + phone
                     
+                    # Generate review link
+                    review_link = generate_feedback_link_for_phone(
+                        phone=full_phone,
+                        business_id=business["id"],
+                        customer_name=name
+                    )
+                    
+                    if not review_link:
+                        return render_template("client_send_customer.html", 
+                                             business=business,
+                                             error="Failed to generate review link.")
+                    
                     # Send WhatsApp message
                     success, message = send_review_template_sigmo(
                         phone=full_phone,
@@ -1303,8 +1315,25 @@ def client_send_customer():
                                     errors.append(f"Row {index + 2}: Invalid phone number")
                                     continue
                                 
+                                # Add country code if not present
+                                if not phone.startswith('+'):
+                                    phone = '+91' + phone  # Default to India, adjust as needed
+                                
+                                # Generate review link
+                                review_link = generate_feedback_link_for_phone(
+                                    phone=phone,
+                                    business_id=business["id"],
+                                    customer_name=name
+                                )
+                                
+                                if not review_link:
+                                    error_count += 1
+                                    errors.append(f"Row {index + 2}: Failed to generate review link")
+                                    continue
+                                
                                 # Send WhatsApp message
-                                success, message = send_review_template_sigmo(phone=full_phone,
+                                success, message = send_review_template_sigmo(
+                                    phone=phone,
                                     customer_name=name,
                                     business_name=business["name"],
                                     review_link=review_link)
